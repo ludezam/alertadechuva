@@ -43,6 +43,7 @@ small {
 </div>
 <br>
 <iframe
+  id="mapa"
   width="100%"
   height="350"
   style="border-radius:12px; border:none; margin-top:15px;"
@@ -102,6 +103,21 @@ setInterval(atualizar, INTERVALO * 1000);
 setInterval(atualizarContador, 1000);
 </script>
 
+<script>
+function recarregarMapa() {
+    const iframe = document.getElementById("mapa");
+    if (iframe) {
+        const src = iframe.src;
+        iframe.src = "";
+        setTimeout(() => {
+            iframe.src = src;
+        }, 500);
+    }
+}
+
+// força recarga do mapa a cada 1 minuto
+setInterval(recarregarMapa, 60000);
+</script>
 
 </body>
 </html>
