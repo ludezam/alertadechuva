@@ -36,6 +36,19 @@ small {
 <body>
 
 <h1>🌧️ Alerta de Chuva</h1>
+<div style="max-width:500px; margin:auto; margin-bottom:15px;">
+    <input
+        id="cidade"
+        placeholder="Digite a cidade (ex: Rio Preto)"
+        style="width:100%; padding:10px; border-radius:8px; border:none; font-size:1em;"
+    >
+    <button onclick="buscarCidade()" style="margin-top:8px; width:100%; padding:10px; border-radius:8px;">
+        🔎 Usar cidade
+    </button>
+    <button onclick="usarGPS()" style="margin-top:8px; width:100%; padding:10px; border-radius:8px;">
+        📍 Usar minha localização
+    </button>
+</div>
 <div class="box">
     <div class="status" id="status">Carregando...</div>
     <div id="detalhe"></div>
@@ -53,15 +66,53 @@ small {
 <small>São José do Rio Preto – atualização automática</small>
 
 <script>
-const LAT = -20.8113;
-const LON = -49.3758;
+let LAT = -20.8113;
+let LON = -49.3758;
 
 const INTERVALO = 300; // segundos (5 minutos)
 let restante = INTERVALO;
 
+async function buscarCidade() {
+    const nome = document.getElementById("cidade").value;
+    if (!nome) return alert("Digite o nome da cidade");
+
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nome)}&count=1&language=pt&format=json`;
+
+    try {
+        const r = await fetch(url);
+        const data = await r.json();
+
+        if (!data.results) {
+            alert("Cidade não encontrada");
+            return;
+        }
+
+        LAT = data.results[0].latitude;
+        LON = data.results[0].longitude;
+
+        atualizar();
+    } catch {
+        alert("Erro ao buscar cidade");
+    }
+}
+function usarGPS() {
+    if (!navigator.geolocation) {
+        alert("GPS não suportado");
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        pos => {
+            LAT = pos.coords.latitude;
+            LON = pos.coords.longitude;
+            atualizar();
+        },
+        () => alert("Permissão de localização negada")
+    );
+}
+
 async function atualizar() {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&minutely_15=precipitation_probability,precipitation&timezone=America/Sao_Paulo`;
-
+    
     try {
         const r = await fetch(url);
         const data = await r.json();
@@ -71,9 +122,9 @@ async function atualizar() {
 
         let status = "🟢 Sem chuva";
         if (prob >= 60 || chuva > 0.3) {
-            status = "🔴 Chuva se aproximando";
+            status = "🔴 Chuva se aproximando ⛈️";
         } else if (prob >= 30) {
-            status = "🟡 Chuva possível";
+            status = "⚠️ Chuva possível";
         }
 
         document.getElementById("status").innerText = status;
