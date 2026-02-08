@@ -43,7 +43,10 @@ small { opacity: 0.7; }
 <body>
 
 <h1>🌧️ Alerta de Chuva</h1>
+<h2>Rio Preto-SP</h2>
+<iframe src="https://www.rainviewer.com/map.html?loc=-20.8615,-49.356,10&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;" allowfullscreen></iframe>
 
+    
 <div id="cidadeAtual" style="margin-bottom:10px; opacity:0.85;">
 📍 Cidade: <b>São José do Rio Preto</b>
 </div>
@@ -85,9 +88,7 @@ function mostrarCidade(nome) {
 function atualizarMapa() {
     const iframe = document.getElementById("mapa");
     const src =
-    // `https://embed.rainviewer.com/?loc=${LAT},${LON},7&layer=radar&smooth=1&snow=0`;
-    `https://www.rainviewer.com/map.html?loc=-20.8615,-49.356,10&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;" allowfullscreen`;
-
+    `https://embed.rainviewer.com/?loc=${LAT},${LON},7&layer=radar&smooth=1&snow=0`;
     iframe.src = "about:blank";
     setTimeout(() => iframe.src = src, 200);
 }
@@ -164,4 +165,5 @@ setInterval(atualizarContador, 1000);
 
 </body>
 </html>
+
 
