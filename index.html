@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!-- Build: versão atualizada 1 -->
-
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
@@ -15,13 +13,8 @@ body {
     text-align: center;
     padding: 20px;
 }
-h1 {
-    font-size: 1.8em;
-}
-.status {
-    font-size: 1.6em;
-    margin: 20px 0;
-}
+h1 { font-size: 1.8em; }
+.status { font-size: 1.6em; margin: 20px 0; }
 .box {
     background: #162235;
     padding: 15px;
@@ -29,21 +22,21 @@ h1 {
     max-width: 500px;
     margin: auto;
 }
-button {
+input, button {
+    font-size: 1em;
+    padding: 10px;
+    border-radius: 8px;
     border: none;
+    width: 100%;
+}
+button {
     background: #1e90ff;
     color: white;
     cursor: pointer;
+    margin-top: 8px;
 }
-button:hover {
-    opacity: 0.9;
-}
-input {
-    font-size: 1em;
-}
-small {
-    opacity: 0.7;
-}
+button:hover { opacity: 0.9; }
+small { opacity: 0.7; }
 </style>
 </head>
 
@@ -52,144 +45,112 @@ small {
 <h1>🌧️ Alerta de Chuva</h1>
 
 <div id="cidadeAtual" style="margin-bottom:10px; opacity:0.85;">
-    📍 Cidade: <b>São José do Rio Preto</b>
+📍 Cidade: <b>São José do Rio Preto</b>
 </div>
 
 <div style="max-width:500px; margin:auto; margin-bottom:15px;">
-    <input
-        id="cidade"
-        placeholder="Digite a cidade (ex: São José do Rio Preto)"
-        style="width:100%; padding:10px; border-radius:8px; border:none;"
-    >
-    <button onclick="buscarCidade()" style="margin-top:8px; width:100%; padding:10px; border-radius:8px;">
-        🔎 Usar cidade
-    </button>
-    <button onclick="usarGPS()" style="margin-top:8px; width:100%; padding:10px; border-radius:8px;">
-        📍 Usar minha localização
-    </button>
+<input id="cidade" placeholder="Digite a cidade">
+<button onclick="buscarCidade()">🔎 Usar cidade</button>
+<button onclick="usarGPS()">📍 Usar minha localização</button>
 </div>
 
 <div class="box">
-    <div class="status" id="status">Carregando...</div>
-    <div id="detalhe"></div>
-    <div id="contador" style="margin-top:10px; opacity:0.8;"></div>
+<div class="status" id="status">Carregando...</div>
+<div id="detalhe"></div>
+<div id="contador" style="margin-top:10px; opacity:0.8;"></div>
 </div>
 
 <iframe
-  id="mapa"
-  width="100%"
-  height="350"
-  style="border-radius:12px; border:none; margin-top:15px;"
-  loading="lazy">
-    <small> Mapa da chuva </small>
+id="mapa"
+width="100%"
+height="350"
+style="border-radius:12px; border:none; margin-top:15px;">
 </iframe>
 
-<iframe src="https://www.rainviewer.com/map.html?loc=-20.8615,-49.356,10&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;" allowfullscreen>
-    mapa RP </iframe>
-
 <br>
-<small> Desenvolvido por LDZ</small>
+<small>Desenvolvido por LDZ</small>
 
 <script>
 let LAT = -20.8113;
 let LON = -49.3758;
 
-const INTERVALO = 300; // 5 minutos
+const INTERVALO = 300;
 let restante = INTERVALO;
 
 function mostrarCidade(nome) {
     document.getElementById("cidadeAtual").innerHTML =
-        `📍 Cidade: <b>${nome}</b>`;
-}
-
-async function buscarCidade() {
-    const nome = document.getElementById("cidade").value;
-    if (!nome) return alert("Digite o nome da cidade");
-
-    try {
-        const r = await fetch(
-          `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nome)}&count=1&language=pt&format=json`
-        );
-        const data = await r.json();
-
-        if (!data.results) return alert("Cidade não encontrada");
-
-        const c = data.results[0];
-        LAT = c.latitude;
-        LON = c.longitude;
-
-        mostrarCidade(`${c.name} ${c.admin1 || ""}`);
-        atualizar();
-        atualizarMapa();
-    } catch {
-        alert("Erro ao buscar cidade");
-    }
-}
-
-function usarGPS() {
-    if (!navigator.geolocation) {
-        alert("GPS não suportado");
-        return;
-    }
-    navigator.geolocation.getCurrentPosition(async pos => {
-        LAT = pos.coords.latitude;
-        LON = pos.coords.longitude;
-
-        try {
-            const r = await fetch(
-              `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${LAT}&longitude=${LON}&language=pt&format=json`
-            );
-            const data = await r.json();
-            if (data.results && data.results.length > 0) {
-                const c = data.results[0];
-                mostrarCidade(`${c.name} ${c.admin1 || ""}`);
-            }
-        } catch {}
-
-        atualizar();
-        atualizarMapa();
-    }, () => alert("Permissão de localização negada"));
+    `📍 Cidade: <b>${nome}</b>`;
 }
 
 function atualizarMapa() {
     const iframe = document.getElementById("mapa");
-    iframe.src =
-      `https://embed.rainviewer.com/?loc=${LAT},${LON},7&layer=radar&smooth=1&snow=0`;
+    const src =
+    `https://embed.rainviewer.com/?loc=${LAT},${LON},7&layer=radar&smooth=1&snow=0`;
+
+    iframe.src = "about:blank";
+    setTimeout(() => iframe.src = src, 200);
 }
-    
-async function atualizar() {
-    try {
+
+async function buscarCidade() {
+    const nome = document.getElementById("cidade").value;
+    if (!nome) return alert("Digite a cidade");
+
+    const r = await fetch(
+    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nome)}&count=1&language=pt`
+    );
+    const data = await r.json();
+    if (!data.results) return alert("Cidade não encontrada");
+
+    LAT = data.results[0].latitude;
+    LON = data.results[0].longitude;
+
+    mostrarCidade(data.results[0].name);
+    atualizar();
+    atualizarMapa();
+}
+
+function usarGPS() {
+    navigator.geolocation.getCurrentPosition(async pos => {
+        LAT = pos.coords.latitude;
+        LON = pos.coords.longitude;
+
         const r = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&minutely_15=precipitation_probability,precipitation&timezone=America/Sao_Paulo`
+        `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${LAT}&longitude=${LON}&language=pt`
         );
         const data = await r.json();
+        if (data.results)
+            mostrarCidade(data.results[0].name);
 
-        const prob = Math.max(...data.minutely_15.precipitation_probability.slice(0,4));
-        const chuva = Math.max(...data.minutely_15.precipitation.slice(0,4));
+        atualizar();
+        atualizarMapa();
+    }, () => alert("Permissão negada"));
+}
 
-        let status = "🟢 Sem chuva";
-        if (prob >= 60 || chuva > 0.3) {
-            status = "🔴 Chuva se aproximando ⛈️";
-        } else if (prob >= 30) {
-            status = "🟡 Chuva possível";
-        }
+async function atualizar() {
+    const r = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&minutely_15=precipitation_probability,precipitation&timezone=America/Sao_Paulo`
+    );
+    const data = await r.json();
 
-        document.getElementById("status").innerText = status;
-        document.getElementById("detalhe").innerHTML =
-            `Probabilidade máx.: <b>${prob}%</b><br>
-             Precipitação: <b>${chuva.toFixed(2)} mm</b>`;
+    const prob = Math.max(...data.minutely_15.precipitation_probability.slice(0,4));
+    const chuva = Math.max(...data.minutely_15.precipitation.slice(0,4));
 
-        restante = INTERVALO;
-    } catch {
-        document.getElementById("status").innerText = "⚠️ Erro ao atualizar";
-    }
+    let status = "🟢 Sem chuva";
+    if (prob >= 40 || chuva > 0.1) status = "🔴 Chuva se aproximando ⛈️";
+    else if (prob >= 20) status = "🟡 Chuva possível";
+
+    document.getElementById("status").innerText = status;
+    document.getElementById("detalhe").innerHTML =
+    `Probabilidade máx.: <b>${prob}%</b><br>Precipitação: <b>${chuva.toFixed(2)} mm</b>`;
+
+    restante = INTERVALO;
 }
 
 function atualizarContador() {
-    const min = Math.floor(restante / 60);
-    const seg = restante % 60;
+    const m = Math.floor(restante / 60);
+    const s = restante % 60;
     document.getElementById("contador").innerText =
-        `🔄 Próxima atualização em ${String(min).padStart(2,"0")}:${String(seg).padStart(2,"0")}`;
+    `🔄 Próxima atualização em ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
     if (restante > 0) restante--;
 }
 
@@ -202,4 +163,3 @@ setInterval(atualizarContador, 1000);
 
 </body>
 </html>
-
