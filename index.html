@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>🌧️ Alerta Chuva</title>
+  <title>🌧️ Alerta de Chuva</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
@@ -11,41 +11,71 @@
 
 <body>
 
+<!-- FUNDO -->
 <div class="sun"></div>
 <div class="moon"></div>
 <div class="stars-layer" id="stars"></div>
 <div class="rain-layer" id="rain"></div>
 
+<!-- TOPO -->
 <header class="topo">
   <h1>🌧️ Alerta de Chuva</h1>
   <p class="subtitulo">Previsão inteligente em tempo real</p>
 </header>
 
+<!-- RESUMO -->
 <section class="resumo-clima">
-  <div>📍 <span id="cidadeAtual">Carregando...</span></div>
-  <div class="temperatura-principal"><span id="tempAtual">--°</span></div>
-  <div id="statusChuva" class="status status-verde"></div>
-  <p id="descricaoAtual"></p>
+  <div class="cidade">
+    📍 <span id="cidadeAtual">Buscando localização...</span>
+  </div>
+
+  <div class="temperatura-principal">
+    <span id="tempAtual">--°</span>
+  </div>
+
+  <div id="statusChuva" class="status status-verde">
+    Carregando...
+  </div>
+
+  <p id="descricaoAtual" class="descricao"></p>
 
   <div class="dados-resumo">
-    <div>🌡️ <strong id="sensacaoAtual"></strong></div>
-    <div>💧 <strong id="umidadeAtual"></strong></div>
-    <div>🌬️ <strong id="ventoAtual"></strong></div>
+    <div class="item">
+      🌡️
+      <span>Sensação</span>
+      <strong id="sensacaoAtual">--°</strong>
+    </div>
+
+    <div class="item">
+      💧
+      <span>Umidade</span>
+      <strong id="umidadeAtual">--%</strong>
+    </div>
+
+    <div class="item">
+      🌬️
+      <span>Vento</span>
+      <strong id="ventoAtual">-- km/h</strong>
+    </div>
   </div>
 </section>
 
+<!-- RADAR -->
 <section class="radar">
-  <iframe id="mapaRadar"></iframe>
+  <iframe id="mapaRadar" title="Radar" loading="lazy"></iframe>
 </section>
 
+<!-- CONTROLES -->
 <section class="controles">
-  <input id="cidade" placeholder="Digite uma cidade">
-  <button id="btnBuscar">Buscar</button>
-  <button id="btnGPS">GPS</button>
-  <button id="btnRefresh">Atualizar</button>
+  <input id="cidade" type="text" placeholder="Digite uma cidade">
+  <button id="btnBuscar">🔎 Buscar</button>
+  <button id="btnGPS">📍 Meu local</button>
+  <button id="btnRefresh">🔄 Atualizar</button>
 </section>
 
-<section>
+<!-- PREVISÃO -->
+<section class="previsao">
+  <h2>🕒 Próximas 12 horas</h2>
   <div id="previsao12h"></div>
 </section>
 
