@@ -1,172 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>⛈️ Alerta de Chuva</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>🌧️ Alerta Chuva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #0e1621;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-h1 { font-size: 1.8em; }
-.status { font-size: 1.6em; margin: 20px 0; }
-.box {
-    background: #162235;
-    padding: 15px;
-    border-radius: 12px;
-    max-width: 500px;
-    margin: auto;
-}
-input, button {
-    font-size: 1em;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    width: 100%;
-}
-button {
-    background: #1e90ff;
-    color: white;
-    cursor: pointer;
-    margin-top: 8px;
-}
-button:hover { opacity: 0.9; }
-small { opacity: 0.7; }
-</style>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 
 <body>
 
-<h1>🌧️ Alerta de Chuva</h1>
+  <!-- CABEÇALHO -->
+  <header class="topo">
 
-<div id="cidadeAtual" style="margin-bottom:10px; opacity:0.85;">
-📍 Cidade: <b>São José do Rio Preto</b>
-</div>
+    <h1>🌧️ Alerta Chuva</h1>
 
-<div style="max-width:500px; margin:auto; margin-bottom:15px;">
-<input id="cidade" placeholder="Digite a cidade">
-<button onclick="buscarCidade()">🔎 Buscar cidade</button>
-<button onclick="usarGPS()">📍 Meu local atual</button>
-</div>
+    <p class="subtitulo">
+      Radar em tempo real e previsão das próximas horas
+    </p>
 
-<div class="box">
-<div class="status" id="status">Carregando...</div>
-<div id="detalhe"></div>
-<div id="contador" style="margin-top:10px; opacity:0.8;"></div>
-</div>
+  </header>
 
-<iframe
-id="mapa"
-width="100%"
-height="350"
-style="border-radius:12px; border:none; margin-top:15px;">
-</iframe>
 
-<br>
 
-<h2>Mapa fixo de Rio Preto-SP</h2>
-<iframe src="https://www.rainviewer.com/map.html?loc=-20.8615,-49.356,10&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;"></iframe>
-    
-<small>Desenvolvido por LDZ</small>
+  <!-- RESUMO PRINCIPAL -->
+  <section class="resumo-clima">
 
-<script>
-let LAT = -20.8113;
-let LON = -49.3758;
+      <div class="cidade-atual">
+          📍 <span id="cidadeAtual">Detectando localização...</span>
+      </div>
 
-const INTERVALO = 300;
-let restante = INTERVALO;
+      <div class="temperatura-principal">
 
-function mostrarCidade(nome) {
-    document.getElementById("cidadeAtual").innerHTML =
-    `📍 Cidade: <b>${nome}</b>`;
-}
+          <span id="tempAtual">--°</span>
 
-function atualizarMapa() {
-    const iframe = document.getElementById("mapa");
-    const src =
-    `https://embed.rainviewer.com/?loc=${LAT},${LON},7&layer=radar&smooth=1&snow=0`;
-    iframe.src = "about:blank";
-    setTimeout(() => iframe.src = src, 200);
-}
+      </div>
 
-async function buscarCidade() {
-    const nome = document.getElementById("cidade").value;
-    if (!nome) return alert("Digite a cidade");
+      <div id="statusChuva" class="status status-verde">
 
-    const r = await fetch(
-    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(nome)}&count=1&language=pt`
-    );
-    const data = await r.json();
-    if (!data.results) return alert("Cidade não encontrada");
+          🟢 Pode sair tranquilo
 
-    LAT = data.results[0].latitude;
-    LON = data.results[0].longitude;
+      </div>
 
-    mostrarCidade(data.results[0].name);
-    atualizar();
-    atualizarMapa();
-}
+      <p id="descricaoAtual" class="descricao">
 
-function usarGPS() {
-    navigator.geolocation.getCurrentPosition(async pos => {
-        LAT = pos.coords.latitude;
-        LON = pos.coords.longitude;
+          Sem previsão de chuva nas próximas horas.
 
-        const r = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${LAT}&longitude=${LON}&language=pt`
-        );
-        const data = await r.json();
-        if (data.results)
-            mostrarCidade(data.results[0].name);
+      </p>
 
-        atualizar();
-        atualizarMapa();
-    }, () => alert("Permissão negada"));
-}
+      <div class="dados-resumo">
 
-async function atualizar() {
-    const r = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&minutely_15=precipitation_probability,precipitation&timezone=America/Sao_Paulo`
-    );
-    const data = await r.json();
+          <div class="item-resumo">
+              🌡️
+              <span>Sensação</span>
+              <strong id="sensacaoAtual">--°</strong>
+          </div>
 
-    const prob = Math.max(...data.minutely_15.precipitation_probability.slice(0,4));
-    const chuva = Math.max(...data.minutely_15.precipitation.slice(0,4));
+          <div class="item-resumo">
+              💧
+              <span>Umidade</span>
+              <strong id="umidadeAtual">--%</strong>
+          </div>
 
-    let status = "🟢 Sem chuva";
-    if (prob >= 40 || chuva > 0.1) status = "🔴 Chuva se aproximando ⛈️";
-    else if (prob >= 20) status = "🟡 Chuva possível";
+          <div class="item-resumo">
+              🌬️
+              <span>Vento</span>
+              <strong id="ventoAtual">-- km/h</strong>
+          </div>
 
-    document.getElementById("status").innerText = status;
-    document.getElementById("detalhe").innerHTML =
-    `Probabilidade máx.: <b>${prob}%</b><br>Precipitação: <b>${chuva.toFixed(2)} mm</b>`;
+      </div>
 
-    restante = INTERVALO;
-}
+  </section>
 
-function atualizarContador() {
-    const m = Math.floor(restante / 60);
-    const s = restante % 60;
-    document.getElementById("contador").innerText =
-    `🔄 Próxima atualização em ${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
-    if (restante > 0) restante--;
-}
 
-mostrarCidade("São José do Rio Preto");
-atualizar();
-atualizarMapa();
-setInterval(atualizar, INTERVALO * 1000);
-setInterval(atualizarContador, 1000);
-</script>
+
+  <!-- RADAR -->
+  <section class="radar">
+
+      <h2>🛰️ Radar de chuva</h2>
+
+      <div class="mapa-fixo-container">
+
+          <iframe
+              id="mapaRadar"
+              class="mapa-fixo"
+              src="https://www.rainviewer.com/map.html?loc=-20.8113,-49.3758,10&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1"
+              title="Radar meteorológico atualizado em tempo real">
+          </iframe>
+
+      </div>
+
+      <a
+          class="btn-ipmet"
+          href="https://www.ipmetradar.com.br/2mobileGis.php"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          🗺️ Abrir radar do IPMet
+
+      </a>
+
+  </section>
+
+
+
+  <!-- BUSCA -->
+  <section class="controles">
+
+      <input
+          id="cidade"
+          type="text"
+          placeholder="Digite uma cidade">
+
+      <button id="btnBuscar">
+
+          🔎 Buscar cidade
+
+      </button>
+
+      <button id="btnGPS">
+
+          📍 Meu local
+
+      </button>
+
+      <button id="btnRefresh">
+
+          🔄 Atualizar previsão
+
+      </button>
+
+  </section>
+
+
+
+  <!-- PREVISÃO -->
+  <section class="previsao-12h">
+
+      <h2>🕒 Previsão hora a hora</h2>
+
+      <div
+          class="previsao-scroll"
+          id="previsao12h">
+
+      </div>
+
+  </section>
+
+
+
+  <footer>
+
+      <small>
+
+          Desenvolvido por LDZ
+
+          <br>
+
+          Dados meteorológicos:
+          Open-Meteo • RainViewer • IPMet
+
+      </small>
+
+  </footer>
 
 </body>
 </html>
-
-
-
-
