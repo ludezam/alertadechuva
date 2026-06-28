@@ -132,6 +132,7 @@ async function atualizar(){
   atualizarVisual();
   atualizarDescricao(d.hourly);
   atualizarMapa();
+  renderizar12h(d.hourly);
 }
 
 /* ================= UI ================= */
