@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-/* ================= ESTADO GLOBAL ================= */
+/* ================= ESTADO ================= */
 let LAT = null;
 let LON = null;
 
@@ -17,7 +17,7 @@ function el(id) {
   return document.getElementById(id);
 }
 
-/* ================= LOCALIZAÇÃO ================= */
+/* ================= GEOLOCALIZAÇÃO ================= */
 function initLocalizacao() {
 
   el("cidadeAtual").textContent = "Buscando localização...";
@@ -28,29 +28,21 @@ function initLocalizacao() {
   }
 
   navigator.geolocation.getCurrentPosition(
-
     pos => {
       LAT = pos.coords.latitude;
       LON = pos.coords.longitude;
 
       el("cidadeAtual").textContent = "Local atual";
-
-      atualizar(); // ✅ só aqui inicia tudo
+      atualizar();
     },
-
     () => {
       el("cidadeAtual").textContent = "Permissão negada";
     },
-
-    {
-      enableHighAccuracy: true,
-      timeout: 8000
-    }
-
+    { enableHighAccuracy: true, timeout: 8000 }
   );
 }
 
-/* ================= SOL / LUA ================= */
+/* ================= CICLO SOL/LUA ================= */
 function atualizarCicloSolar() {
 
   const sun = document.querySelector(".sun");
@@ -100,7 +92,6 @@ function gerarEstrelas(qtd = 80) {
   layer.innerHTML = "";
 
   for (let i = 0; i < qtd; i++) {
-
     const s = document.createElement("div");
     s.className = "star";
 
@@ -139,6 +130,22 @@ function stopRain() {
   el("rain").innerHTML = "";
 }
 
+/* ================= ÍCONES DINÂMICOS ================= */
+function getIcon(codigo, prob) {
+
+  if (codigo === 0) return "☀️";
+  if ([1, 2, 3].includes(codigo)) return "🌤️";
+  if ([45, 48].includes(codigo)) return "🌫️";
+  if ([51, 53, 55].includes(codigo)) return "🌦️";
+  if ([61, 63, 65].includes(codigo)) return "🌧️";
+  if ([71, 73, 75].includes(codigo)) return "❄️";
+  if ([95, 96, 99].includes(codigo)) return "⛈️";
+
+  if (prob > 70) return "🌧️";
+
+  return "🌤️";
+}
+
 /* ================= API ================= */
 async function atualizar() {
 
@@ -147,7 +154,7 @@ async function atualizar() {
   try {
 
     const r = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=temperature_2m,precipitation_probability,precipitation&current=temperature_2m,apparent_temperature,precipitation,precipitation_probability,wind_speed_10m,relative_humidity_2m&timezone=auto`
+      `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=temperature_2m,precipitation_probability,precipitation,weathercode&current=temperature_2m,apparent_temperature,precipitation,precipitation_probability,wind_speed_10m,relative_humidity_2m&timezone=auto`
     );
 
     const d = await r.json();
@@ -192,7 +199,6 @@ function atualizarVisual() {
     document.body.style.filter = "brightness(0.85)";
     el("statusChuva").textContent = "🔴 Chuva forte";
   } else if (estadoAtual.prob > 60) {
-    document.body.style.filter = "brightness(0.95)";
     el("statusChuva").textContent = "🟡 Chuva chegando";
   } else {
     document.body.style.filter = "brightness(1)";
@@ -200,7 +206,7 @@ function atualizarVisual() {
   }
 }
 
-/* ================= TEXTO ================= */
+/* ================= DESCRIÇÃO ================= */
 function atualizarDescricao(h) {
 
   for (let i = 0; i < 6; i++) {
@@ -227,11 +233,14 @@ function renderizar12h(h) {
 
     const temp = h.temperature_2m[start + i] ?? "--";
     const prob = h.precipitation_probability[start + i] ?? "--";
+    const codigo = h.weathercode[start + i];
+
+    const icone = getIcon(codigo, prob);
 
     return `
       <div class="previsao-card">
         <div class="hora">${t.slice(11,16)}</div>
-        <div>🌤️</div>
+        <div>${icone}</div>
         <div class="temp">${Math.round(temp)}°</div>
         <div>${prob}% chuva</div>
       </div>
