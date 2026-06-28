@@ -15,6 +15,152 @@ body {
   align-items: center;
 
   padding: 14px;
+
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* efeito de profundidade geral */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(120, 180, 255, 0.18), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255, 180, 120, 0.12), transparent 50%);
+  pointer-events: none;
+}
+
+/* camada extra estilo iOS */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.05), transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 55%);
+  pointer-events: none;
+}
+
+/* =========================
+   FUNDO DINÂMICO (JS controla)
+========================= */
+
+body.day {
+  background: radial-gradient(circle at top,
+    #5db9ff 0%,
+    #2f7fd8 45%,
+    #0b1b33 100%);
+}
+
+body.afternoon {
+  background: radial-gradient(circle at top,
+    #ffb45e 0%,
+    #ff7a3d 45%,
+    #1b1f2e 100%);
+}
+
+body.night {
+  background: radial-gradient(circle at top,
+    #0b1220 0%,
+    #05070f 50%,
+    #02030a 100%);
+}
+
+/* =========================
+   SOL E LUA (CAMADA FUNDO)
+========================= */
+
+.sky-object {
+  position: fixed;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* SOL */
+.sun {
+  background: radial-gradient(circle, #ffd76a, #ff9f1c);
+  box-shadow: 0 0 80px rgba(255, 200, 0, 0.5);
+  animation: sunPath 24s linear infinite;
+}
+
+/* LUA */
+.moon {
+  background: radial-gradient(circle, #f5f5f5, #cfd8dc);
+  box-shadow: 0 0 60px rgba(255,255,255,0.35);
+  animation: moonPath 24s linear infinite;
+}
+
+@keyframes sunPath {
+  0%   { transform: translate(-20vw, 60vh); opacity: 0; }
+  25%  { opacity: 1; }
+  50%  { transform: translate(50vw, -10vh); opacity: 1; }
+  75%  { opacity: 1; }
+  100% { transform: translate(120vw, 60vh); opacity: 0; }
+}
+
+@keyframes moonPath {
+  0%   { transform: translate(120vw, 60vh); opacity: 0; }
+  50%  { transform: translate(40vw, -10vh); opacity: 1; }
+  100% { transform: translate(-20vw, 60vh); opacity: 0; }
+}
+
+/* =========================
+   CHUVA iOS
+========================= */
+
+.rain-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.drop {
+  position: absolute;
+  width: 1.5px;
+  height: 90px;
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.35));
+
+  animation: rainFall linear infinite;
+}
+
+@keyframes rainFall {
+  to {
+    transform: translateY(120vh);
+  }
+}
+
+/* =========================
+   SEU CSS ORIGINAL (MANTIDO)
+========================= */
+
+/* 🔻 aqui abaixo continua TODO o seu CSS original sem alteração 🔻 */
+
+/* =========================
+   BASE iOS / APP STYLE
+========================= */
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  color: white;
+
+  background: radial-gradient(circle at top, #1b3a57 0%, #0b1220 45%, #070b14 100%);
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 14px;
 }
 
 /* efeito de profundidade geral */
