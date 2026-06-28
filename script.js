@@ -1,5 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+/* =========================
+   TEMA AUTOMÁTICO (iOS STYLE)
+========================= */
+
+function setThemeByTime() {
+  const hour = new Date().getHours();
+
+  document.body.classList.remove("day", "afternoon", "night");
+
+  if (hour >= 6 && hour < 12) {
+    document.body.classList.add("day");
+  } else if (hour >= 12 && hour < 18) {
+    document.body.classList.add("afternoon");
+  } else {
+    document.body.classList.add("night");
+  }
+}
+
+setThemeByTime();
+setInterval(setThemeByTime, 60000);
+
+/* =========================
+   CHUVA DINÂMICA
+========================= */
+
+function startRain(intensity = 60) {
+  const rain = document.getElementById("rain");
+  rain.innerHTML = "";
+
+  for (let i = 0; i < intensity; i++) {
+    const drop = document.createElement("div");
+    drop.classList.add("drop");
+
+    drop.style.left = Math.random() * 100 + "vw";
+    drop.style.animationDuration = (0.4 + Math.random()) + "s";
+    drop.style.opacity = Math.random();
+
+    rain.appendChild(drop);
+  }
+}
+
+function stopRain() {
+  document.getElementById("rain").innerHTML = "";
+}
+
   // ================= CONFIGURAÇÃO =================
   let LAT = -20.8113;
   let LON = -49.3758;
