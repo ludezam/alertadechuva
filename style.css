@@ -1,456 +1,78 @@
-/* =========================
-   BASE iOS / APP STYLE
-========================= */
-
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display";
   color: white;
-
-  background: radial-gradient(circle at top, #1b3a57 0%, #0b1220 45%, #070b14 100%);
   min-height: 100vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   padding: 14px;
-
   overflow-x: hidden;
-  position: relative;
 }
 
-/* efeito de profundidade geral */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(120, 180, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255, 180, 120, 0.12), transparent 50%);
-  pointer-events: none;
-}
-
-/* camada extra estilo iOS */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.05), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.04), transparent 55%);
-  pointer-events: none;
-}
-
-/* =========================
-   FUNDO DINÂMICO (JS controla)
-========================= */
-
+/* FUNDO DINÂMICO */
 body.day {
-  background: radial-gradient(circle at top,
-    #5db9ff 0%,
-    #2f7fd8 45%,
-    #0b1b33 100%);
+  background: radial-gradient(circle at top, #5db9ff, #0b1b33);
 }
-
 body.afternoon {
-  background: radial-gradient(circle at top,
-    #ffb45e 0%,
-    #ff7a3d 45%,
-    #1b1f2e 100%);
+  background: radial-gradient(circle at top, #ffb45e, #1b1f2e);
 }
-
 body.night {
-  background: radial-gradient(circle at top,
-    #0b1220 0%,
-    #05070f 50%,
-    #02030a 100%);
-}
-
-/* =========================
-   SOL E LUA (CAMADA FUNDO)
-========================= */
-
-.sky-object {
-  position: fixed;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.9;
+  background: radial-gradient(circle at top, #0b1220, #02030a);
 }
 
 /* SOL */
 .sun {
+  position: fixed;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
   background: radial-gradient(circle, #ffd76a, #ff9f1c);
-  box-shadow: 0 0 80px rgba(255, 200, 0, 0.5);
-  animation: sunPath 24s linear infinite;
+  box-shadow: 0 0 80px rgba(255,200,0,0.5);
 }
 
-/* LUA */
-.moon {
-  background: radial-gradient(circle, #f5f5f5, #cfd8dc);
-  box-shadow: 0 0 60px rgba(255,255,255,0.35);
-  animation: moonPath 24s linear infinite;
-}
-
-@keyframes sunPath {
-  0%   { transform: translate(-20vw, 60vh); opacity: 0; }
-  25%  { opacity: 1; }
-  50%  { transform: translate(50vw, -10vh); opacity: 1; }
-  75%  { opacity: 1; }
-  100% { transform: translate(120vw, 60vh); opacity: 0; }
-}
-
-@keyframes moonPath {
-  0%   { transform: translate(120vw, 60vh); opacity: 0; }
-  50%  { transform: translate(40vw, -10vh); opacity: 1; }
-  100% { transform: translate(-20vw, 60vh); opacity: 0; }
-}
-
-/* =========================
-   CHUVA iOS
-========================= */
-
+/* CHUVA */
 .rain-layer {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
 }
 
 .drop {
   position: absolute;
-  width: 1.5px;
-  height: 90px;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,0),
-    rgba(255,255,255,0.35));
-
+  width: 2px;
+  height: 110px;
+  opacity: 0.6;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
   animation: rainFall linear infinite;
 }
 
 @keyframes rainFall {
-  to {
-    transform: translateY(120vh);
-  }
+  to { transform: translateY(120vh); }
 }
 
-/* =========================
-   SEU CSS ORIGINAL (MANTIDO)
-========================= */
+/* CONTAINER */
+section, header, footer {
+  width: min(900px, 100%);
+}
 
-/* 🔻 aqui abaixo continua TODO o seu CSS original sem alteração 🔻 */
-
-/* =========================
-   BASE iOS / APP STYLE
-========================= */
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-  color: white;
-
-  background: radial-gradient(circle at top, #1b3a57 0%, #0b1220 45%, #070b14 100%);
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+/* CARDS */
+.resumo-clima,
+.previsao-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
   padding: 14px;
 }
 
-/* efeito de profundidade geral */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(120, 180, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255, 180, 120, 0.12), transparent 50%);
-  pointer-events: none;
-}
-
-/* =========================
-   CABEÇALHO
-========================= */
-
-.topo {
-  width: min(900px, 100%);
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-h1 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 6px 0;
-}
-
-.subtitulo {
-  opacity: 0.65;
-  font-size: 0.95rem;
-}
-
-/* =========================
-   RESUMO CLIMA (APPLE STYLE)
-========================= */
-
-.resumo-clima {
-  width: min(900px, 100%);
-  padding: 18px;
-  margin: 10px 0 14px;
-
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.cidade-atual {
-  font-size: 0.95rem;
-  opacity: 0.75;
-  margin-bottom: 6px;
-}
-
-.temperatura-principal {
-  font-size: 64px;
-  font-weight: 200;
-  letter-spacing: -2px;
-}
-
 /* STATUS */
-.status {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  margin-top: 6px;
-}
+.status-verde { color: #34c759; }
+.status-amarelo { color: #ffcc00; }
+.status-vermelho { color: #ff3b30; }
 
-.status-verde {
-  background: rgba(52, 199, 89, 0.2);
-  color: #34c759;
-}
-
-.status-amarelo {
-  background: rgba(255, 204, 0, 0.2);
-  color: #ffcc00;
-}
-
-.status-vermelho {
-  background: rgba(255, 59, 48, 0.2);
-  color: #ff3b30;
-}
-
-.descricao {
-  opacity: 0.75;
-  margin-top: 8px;
-}
-
-/* DADOS RESUMO */
-.dados-resumo {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.item-resumo {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 10px;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.item-resumo strong {
-  display: block;
-  margin-top: 4px;
-  font-size: 1rem;
-}
-
-/* =========================
-   CONTROLES
-========================= */
-
-.controles {
-  width: min(900px, 100%);
-  display: grid;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-#cidade {
-  padding: 12px;
-  border-radius: 14px;
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-
-  color: white;
-  outline: none;
-}
-
-/* BOTÕES iOS */
-button,
-.btn-ipmet {
-  appearance: none;
-  -webkit-appearance: none;
-
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  color: white;
-  font-weight: 500;
-
-  border-radius: 14px;
-
-  padding: 12px 14px;
-  min-height: 46px;
-
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-
-button:hover,
-.btn-ipmet:hover {
-  background: rgba(255, 255, 255, 0.14);
-  transform: translateY(-1px);
-}
-
-button:active,
-.btn-ipmet:active {
-  transform: scale(0.97);
-}
-
-/* =========================
-   RADAR
-========================= */
-
-.radar {
-  width: min(900px, 100%);
-}
-
-.mapa-fixo-container {
-  width: 100%;
-}
-
-.mapa-fixo {
-  width: 100%;
-  height: clamp(300px, 60vh, 700px);
-  border: none;
-  border-radius: 18px;
-  margin-top: 10px;
-}
-
-.btn-ipmet {
-  display: inline-flex;
-  justify-content: center;
-  margin-top: 10px;
-  text-decoration: none;
-}
-
-/* =========================
-   PREVISÃO
-========================= */
-
-.previsao-12h {
-  width: min(900px, 100%);
-  margin-top: 14px;
-  text-align: left;
-}
-
-.previsao-12h h2 {
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-}
-
+/* GRID */
 .previsao-scroll {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
   gap: 10px;
-}
-
-@media (min-width: 560px) {
-  .previsao-scroll {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  }
-}
-
-/* CARD iOS */
-.previsao-card {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  border-radius: 18px;
-
-  padding: 12px;
-  min-height: 140px;
-
-  display: grid;
-  gap: 6px;
-  justify-items: center;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.hora {
-  font-size: 0.85rem;
-  opacity: 0.7;
-}
-
-.icone-clima {
-  font-size: 1.4rem;
-}
-
-.temperatura {
-  font-size: 1.4rem;
-  font-weight: 300;
-}
-
-.chuva {
-  font-size: 0.8rem;
-  opacity: 0.75;
-}
-
-/* VENTO */
-.vento-card {
-  display: grid;
-  justify-items: center;
-  gap: 2px;
-}
-
-.seta-vento {
-  font-size: 1.3rem;
-  transform: rotate(var(--direcao-vento));
-  color: #9fd0ff;
-}
-
-.velocidade-vento {
-  font-size: 0.8rem;
-  opacity: 0.85;
-}
-
-/* FOOTER */
-small {
-  display: block;
-  margin-top: 12px;
-  opacity: 0.6;
-  text-align: center;
 }
