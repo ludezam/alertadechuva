@@ -1,3 +1,5 @@
+index.html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,68 +13,164 @@
 
 <body>
 
-<!-- FUNDO iOS -->
+<!-- SKY LAYERS iOS -->
 <div class="sun sky-object"></div>
+<!-- <div class="moon sky-object"></div> -->
 <div class="rain-layer" id="rain"></div>
 
-<header class="topo">
-  <h1>🌧️ Alerta Chuva</h1>
-  <p class="subtitulo">Radar em tempo real e previsão das próximas horas</p>
-</header>
+  <!-- CABEÇALHO -->
+  <header class="topo">
 
-<section class="resumo-clima">
-  <div class="cidade-atual">
-    📍 <span id="cidadeAtual">Detectando localização...</span>
-  </div>
+    <h1>🌧️ Alerta Chuva</h1>
 
-  <div class="temperatura-principal">
-    <span id="tempAtual">--°</span>
-  </div>
+    <p class="subtitulo">
+      Radar em tempo real e previsão das próximas horas
+    </p>
 
-  <div id="statusChuva" class="status status-verde">
-    🟢 Pode sair tranquilo
-  </div>
+  </header>
 
-  <p id="descricaoAtual" class="descricao"></p>
 
-  <div class="dados-resumo">
-    <div class="item-resumo">🌡️<span>Sensação</span><strong id="sensacaoAtual">--°</strong></div>
-    <div class="item-resumo">💧<span>Umidade</span><strong id="umidadeAtual">--%</strong></div>
-    <div class="item-resumo">🌬️<span>Vento</span><strong id="ventoAtual">-- km/h</strong></div>
-  </div>
-</section>
 
-<section class="radar">
-  <h2>🛰️ Radar de chuva</h2>
+  <!-- RESUMO PRINCIPAL -->
+  <section class="resumo-clima">
 
-  
-  </iframe>
+      <div class="cidade-atual">
+          📍 <span id="cidadeAtual">Detectando localização...</span>
+      </div>
 
-  <a class="btn-ipmet"
-    href="https://www.ipmetradar.com.br/2mobileGis.php"
-    target="_blank">
-    🗺️ Abrir radar do IPMet
-  </a>
-</section>
+      <div class="temperatura-principal">
 
-<section class="controles">
-  <input id="cidade" type="text" placeholder="Digite uma cidade">
-  <button id="btnBuscar">🔎 Buscar cidade</button>
-  <button id="btnGPS">📍 Meu local</button>
-  <button id="btnRefresh">🔄 Atualizar previsão</button>
-</section>
+          <span id="tempAtual">--°</span>
 
-<section class="previsao-12h">
-  <h2>🕒 Previsão hora a hora</h2>
-  <div class="previsao-scroll" id="previsao12h"></div>
-</section>
+      </div>
 
-<footer>
-  <small>
-    Desenvolvido por LDZ<br>
-    Open-Meteo • RainViewer • IPMet
-  </small>
-</footer>
+      <div id="statusChuva" class="status status-verde">
+
+          🟢 Pode sair tranquilo
+
+      </div>
+
+      <p id="descricaoAtual" class="descricao">
+
+          Sem previsão de chuva nas próximas horas.
+
+      </p>
+
+      <div class="dados-resumo">
+
+          <div class="item-resumo">
+              🌡️
+              <span>Sensação</span>
+              <strong id="sensacaoAtual">--°</strong>
+          </div>
+
+          <div class="item-resumo">
+              💧
+              <span>Umidade</span>
+              <strong id="umidadeAtual">--%</strong>
+          </div>
+
+          <div class="item-resumo">
+              🌬️
+              <span>Vento</span>
+              <strong id="ventoAtual">-- km/h</strong>
+          </div>
+
+      </div>
+
+  </section>
+
+
+
+  <!-- RADAR -->
+  <section class="radar">
+
+      <h2>🛰️ Radar de chuva</h2>
+
+      <div class="mapa-fixo-container">
+
+          <iframe
+              id="mapaRadar"
+              class="mapa-fixo"
+              src="https://www.rainviewer.com/map.html?loc=-20.8113,-49.3758,10&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1"
+              title="Radar meteorológico atualizado em tempo real">
+          </iframe>
+
+      </div>
+
+      <a
+          class="btn-ipmet"
+          href="https://www.ipmetradar.com.br/2mobileGis.php"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          🗺️ Abrir radar do IPMet
+
+      </a>
+
+  </section>
+
+
+
+  <!-- BUSCA -->
+  <section class="controles">
+
+      <input
+          id="cidade"
+          type="text"
+          placeholder="Digite uma cidade">
+
+      <button id="btnBuscar">
+
+          🔎 Buscar cidade
+
+      </button>
+
+      <button id="btnGPS">
+
+          📍 Meu local
+
+      </button>
+
+      <button id="btnRefresh">
+
+          🔄 Atualizar previsão
+
+      </button>
+
+  </section>
+
+
+
+  <!-- PREVISÃO -->
+  <section class="previsao-12h">
+
+      <h2>🕒 Previsão hora a hora</h2>
+
+      <div
+          class="previsao-scroll"
+          id="previsao12h">
+
+      </div>
+
+  </section>
+
+
+
+  <footer>
+
+      <small>
+
+          Desenvolvido por LDZ
+
+          <br>
+
+          Dados meteorológicos:
+          Open-Meteo • RainViewer • IPMet
+
+      </small>
+
+  </footer>
 
 </body>
 </html>
