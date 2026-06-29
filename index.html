@@ -88,6 +88,19 @@
       Dados de Open-Meteo • RainViewer • IPMet 
     </span>
   </p>
+	<script>
+	  // 1. Seleciona o input e o botão existentes
+	  const campoCidade = document.getElementById("cidade");
+	  const btnBuscarCidade = document.getElementById("btnBuscar");
 
+	  // 2. Escuta o teclado quando o usuário estiver digitando no input
+	  campoCidade.addEventListener("keydown", function(event) {
+		// 3. Verifica se a tecla pressionada foi o Enter
+		if (event.key === "Enter") {
+		  event.preventDefault(); // Evita comportamentos indesejados da página
+		  btnBuscarCidade.click();  // Dispara o clique do seu botão automaticamente
+		}
+	});
+	</script>
 </body>
 </html>
