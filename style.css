@@ -9,7 +9,6 @@ body {
   align-items: center;
 
   padding: 14px;
-  padding-top: calc(env(safe-area-inset-top) + 10px);
   overflow-x: hidden;
 
   background: radial-gradient(circle at top, #1b3a57 0%, #0b1220 60%, #05070f 100%);
