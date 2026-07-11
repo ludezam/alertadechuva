@@ -62,45 +62,34 @@
 <!-- RADAR -->
 <section class="radar">
   <iframe id="mapaRadar" title="Radar" loading="lazy"></iframe>
-  <a href="https://www.ipmetradar.com.br/2mobileGis.php"
-   target="_blank"
-   class="btn-ipmet">
-   📡 Ver no IPMet
+  <a href="https://www.ipmetradar.com.br/2mobileGis.php" target="_blank" class="btn-ipmet">
+    📡 Ver no IPMet
   </a> 
 </section>
 
 <!-- CONTROLES -->
 <section class="controles">
   <input id="cidade" type="text" placeholder="Digite uma cidade">
-  <button id="btnBuscar"> Buscar cidade </button>
-  <button id="btnGPS"> 📍 Meu local </button>
-  <button id="btnRefresh"> Atualizar </button>
+  <button id="btnBuscar">Buscar cidade</button>
+  <button id="btnGPS">📍 Meu local</button>
+  <button id="btnRefresh">Atualizar</button>
 </section>
 
-<!-- PREVISÃO -->
-<section class="previsao">
-  <h2>Próximas 12 horas</h2>
-  <div id="previsao12h"></div>
-</section>
-  <p>
-	<br>
-    <span> Desenvolvido por LDZ <br>
-      Dados de Open-Meteo • RainViewer • IPMet 
-    </span>
-  </p>
-	<script>
-	  // 1. Seleciona o input e o botão existentes
-	  const campoCidade = document.getElementById("cidade");
-	  const btnBuscarCidade = document.getElementById("btnBuscar");
+<footer>
+  <p>Desenvolvido por LDZ<br>Dados de Open-Meteo • RainViewer • IPMet</p>
+</footer>
 
-	  // 2. Escuta o teclado quando o usuário estiver digitando no input
-	  campoCidade.addEventListener("keydown", function(event) {
-		// 3. Verifica se a tecla pressionada foi o Enter
-		if (event.key === "Enter") {
-		  event.preventDefault(); // Evita comportamentos indesejados da página
-		  btnBuscarCidade.click();  // Dispara o clique do seu botão automaticamente
-		}
-	});
-	</script>
+<script>
+  const campoCidade = document.getElementById("cidade");
+  const btnBuscarCidade = document.getElementById("btnBuscar");
+
+  campoCidade.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      btnBuscarCidade.click();
+    }
+  });
+</script>
+
 </body>
 </html>
