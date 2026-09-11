@@ -61,10 +61,7 @@
 
 <!-- CONTROLES -->
 <section class="controles">
-  <input id="cidade" type="text" placeholder="Digite uma cidade">
-  <button id="btnBuscar">Buscar cidade</button>
   <button id="btnGPS">📍 Meu local</button>
-  <button id="btnRefresh">Atualizar</button>
   <br>
   <a href="https://ludezam.github.io/tempoLDZ/" class="btn-ipmet">
     - Acesse o novo site: 🌤️ Tempo LDZ
@@ -74,18 +71,5 @@
 <footer>
   <p>Desenvolvido por LDZ<br>Dados de Open-Meteo • RainViewer • IPMet</p>
 </footer>
-
-<script>
-  const campoCidade = document.getElementById("cidade");
-  const btnBuscarCidade = document.getElementById("btnBuscar");
-
-  campoCidade.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      btnBuscarCidade.click();
-    }
-  });
-</script>
-
 </body>
 </html>
